@@ -2,23 +2,25 @@ const express = require('express');
 const axios = require('axios');
 const path = require('path');
 const cors = require('cors');
-const app = express();
-const http = require('http').createServer(app);
+const http = require('http');
 const WebSocket = require('ws');
 
-const PORT = 3000;
+const app = express();
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
+
+const PORT = process.env.PORT || 3000;
 const BACKEND_URL = "https://proyectoanalisis.onrender.com";
 
-// Habilitar CORS para permitir peticiones desde cualquier dominio
-app.use(cors());
+// Habilitar CORS para permitir peticiones desde el frontend en Vercel
+app.use(cors({
+    origin: ['https://proyecto-analisis-ih96.vercel.app'],
+    methods: ['GET', 'POST']
+}));
 
-// Configuración de Express
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'view')));
 app.use('/controller', express.static(path.join(__dirname, 'controller')));
-
-// Crear servidor WebSocket
-const wss = new WebSocket.Server({ server: http });
 
 // Singleton para almacenar los productos seleccionados
 class SelectedProducts {
@@ -45,16 +47,9 @@ class SelectedProducts {
 
 const selectedProducts = new SelectedProducts();
 
-// Manejar conexiones WebSocket
+// WebSockets para actualización en tiempo real
 wss.on('connection', (ws) => {
-    // Enviar número de conexiones activas
-    const clientCount = wss.clients.size;
-    const message = JSON.stringify({ type: 'clientCount', count: clientCount });
-    wss.clients.forEach(client => {
-        if (client.readyState === WebSocket.OPEN) {
-            client.send(message);
-        }
-    });
+    console.log("Cliente conectado a WebSockets");
 
     // Enviar estado inicial de productos seleccionados
     ws.send(JSON.stringify({
@@ -75,7 +70,7 @@ wss.on('connection', (ws) => {
                     break;
             }
 
-            // Notificar a todos los clientes
+            // Notificar a todos los clientes excepto al remitente
             wss.clients.forEach((client) => {
                 if (client !== ws && client.readyState === WebSocket.OPEN) {
                     client.send(JSON.stringify(data));
@@ -87,23 +82,11 @@ wss.on('connection', (ws) => {
     });
 
     ws.on('close', () => {
-        // Limpiar productos seleccionados por este cliente
-        for (const [productId, userId] of selectedProducts.entries()) {
-            if (userId === ws.userId) {
-                selectedProducts.delete(productId);
-            }
-        }
+        console.log("Cliente desconectado de WebSockets");
     });
 });
 
-// Rutas Express
-
-// Página principal
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'view', 'index.html'));
-});
-
-// Obtener productos desde el backend en Render
+// Rutas API
 app.get('/productos', async (req, res) => {
     try {
         const response = await axios.get(`${BACKEND_URL}/productos`);
@@ -114,7 +97,6 @@ app.get('/productos', async (req, res) => {
     }
 });
 
-// Guardar productos en el backend de Render
 app.post('/guardar-productos', async (req, res) => {
     try {
         const response = await axios.post(`${BACKEND_URL}/guardar-productos`, req.body);
@@ -137,7 +119,7 @@ app.post('/guardar-productos', async (req, res) => {
     }
 });
 
-// Iniciar el servidor en todas las interfaces
-http.listen(PORT, '0.0.0.0', () => {
+// Iniciar servidor
+server.listen(PORT, () => {
     console.log(`Servidor corriendo en http://0.0.0.0:${PORT}`);
 });
