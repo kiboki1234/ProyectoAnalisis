@@ -1,12 +1,21 @@
-// server.js
 const express = require('express');
-const fs = require('fs');
+const axios = require('axios');
 const path = require('path');
+const cors = require('cors');
 const app = express();
 const http = require('http').createServer(app);
 const WebSocket = require('ws');
 
 const PORT = 3000;
+const BACKEND_URL = "https://proyectoanalisis.onrender.com";
+
+// Habilitar CORS para permitir peticiones desde cualquier dominio
+app.use(cors());
+
+// Configuración de Express
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'view')));
+app.use('/controller', express.static(path.join(__dirname, 'controller')));
 
 // Crear servidor WebSocket
 const wss = new WebSocket.Server({ server: http });
@@ -36,14 +45,9 @@ class SelectedProducts {
 
 const selectedProducts = new SelectedProducts();
 
-// Configuración de Express
-app.use(express.json());
-app.use(express.static(path.join(__dirname, 'view')));
-app.use('/controller', express.static(path.join(__dirname, 'controller')));
-
 // Manejar conexiones WebSocket
 wss.on('connection', (ws) => {
-    // Envía un mensaje a todos los clientes con el número de conexiones
+    // Enviar número de conexiones activas
     const clientCount = wss.clients.size;
     const message = JSON.stringify({ type: 'clientCount', count: clientCount });
     wss.clients.forEach(client => {
@@ -51,6 +55,8 @@ wss.on('connection', (ws) => {
             client.send(message);
         }
     });
+
+    // Enviar estado inicial de productos seleccionados
     ws.send(JSON.stringify({
         type: 'initialState',
         selectedProducts: Array.from(selectedProducts.entries())
@@ -69,14 +75,14 @@ wss.on('connection', (ws) => {
                     break;
             }
 
-            // Broadcast a todos los clientes excepto al remitente
+            // Notificar a todos los clientes
             wss.clients.forEach((client) => {
                 if (client !== ws && client.readyState === WebSocket.OPEN) {
                     client.send(JSON.stringify(data));
                 }
             });
         } catch (error) {
-            console.error('Error processing message:', error);
+            console.error('Error procesando mensaje:', error);
         }
     });
 
@@ -90,46 +96,48 @@ wss.on('connection', (ws) => {
     });
 });
 
-// Rutas Express existentes
+// Rutas Express
+
+// Página principal
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'view', 'index.html'));
 });
 
-app.get('/productos', (req, res) => {
-    fs.readFile(path.join(__dirname, 'model', 'productos.txt'), 'utf8', (err, data) => {
-        if (err) {
-            console.error("Error al leer productos.txt:", err);
-            res.status(500).send('Error al leer el archivo de productos');
-        } else {
-            res.setHeader('Content-Type', 'text/plain');
-            res.send(data);
-        }
-    });
+// Obtener productos desde el backend en Render
+app.get('/productos', async (req, res) => {
+    try {
+        const response = await axios.get(`${BACKEND_URL}/productos`);
+        res.json(response.data);
+    } catch (error) {
+        console.error("Error al obtener productos del backend:", error);
+        res.status(500).send('Error al obtener productos del backend');
+    }
 });
 
-app.post('/guardar-productos', (req, res) => {
-    const fileContent = req.body.fileContent;
-    fs.writeFile(path.join(__dirname, 'model', 'productos.txt'), fileContent, 'utf8', (err) => {
-        if (err) {
-            res.status(500).send('Error al guardar el archivo de productos');
-        } else {
-            // Enviar mensaje a todos los clientes conectados
-            const message = JSON.stringify({
-                type: 'updateProducts',
-                fileContent: fileContent
-            });
-            wss.clients.forEach((client) => {
-                if (client.readyState === WebSocket.OPEN) {
-                    client.send(message);
-                }
-            });
+// Guardar productos en el backend de Render
+app.post('/guardar-productos', async (req, res) => {
+    try {
+        const response = await axios.post(`${BACKEND_URL}/guardar-productos`, req.body);
 
-            res.send('Archivo de productos guardado exitosamente');
-        }
-    });
+        // Notificar a los clientes WebSocket del cambio
+        const message = JSON.stringify({
+            type: 'updateProducts',
+            fileContent: req.body.fileContent
+        });
+        wss.clients.forEach((client) => {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(message);
+            }
+        });
+
+        res.send(response.data);
+    } catch (error) {
+        console.error("Error al guardar productos en el backend:", error);
+        res.status(500).send('Error al guardar productos en el backend');
+    }
 });
 
-// Usar http.listen en lugar de app.listen
+// Iniciar el servidor en todas las interfaces
 http.listen(PORT, '0.0.0.0', () => {
     console.log(`Servidor corriendo en http://0.0.0.0:${PORT}`);
 });
