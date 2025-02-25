@@ -1,0 +1,16 @@
+{
+  "name": "g1_gestion_producto",
+  "version": "1.0.0",
+  "description": "Gestión de productos con Express y Vercel",
+  "main": "api/index.js",
+  "scripts": {
+    "start": "node api/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

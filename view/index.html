@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ferretería DSA - Verificar Stock</title>
+    <link rel="stylesheet" href="css/styleStock.css">
+    <link rel="stylesheet" href="css/stylesMenu.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<!-- Bootstrap Icons (Opcional) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="/controller/menu.js"></script>
+    <script src="/controller/menuRenderer.js"></script>
+    <script src="/controller/facade.js"></script>
+   </head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>VERIFICAR STOCK</h1>
+        </header>
+        <div class="main-content">
+            <aside>
+                <nav id="menu-container"></nav>
+            </aside>
+            <main>
+                <section class="status-filter">
+                    <div class="status-text">
+                        <i id="img" class="material-icons">inventory</i>
+                        <label for="status-select">Seleccione el estado deseado</label>
+                        <select id="status-select">
+                            <option id="status-critico" value="Crítico">Estado Crítico</option>
+                            <option id="status-bajo" value="Bajo">Estado Bajo</option>
+                            <option id="status-adecuado" value="Adecuado">Estado Adecuado</option>
+                        </select>
+                        <div class="status-indicators">
+                            <span class="critico">● </span>
+                            <span>Estado Crítico</span>
+                            <span class="bajo">● </span>
+                            <span>Estado Bajo</span>
+                            <span class="adecuado">● </span>
+                            <span>Estado Adecuado</span>
+                        </div>
+                    </div>
+                </section>
+                <div class="search-container">
+                    <label for="search-id">Buscar Producto:</label>
+                    <input type="text" id="search-id" placeholder="Buscar por ID">
+                    <button id="btn_modificar" type="button">Buscar</button>
+                </div>
+                <section class="table-container">
+                    <table id="product-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Stock</th>
+                                <th>Estado de Stock</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos de los productos se insertarán aquí -->
+                        </tbody>
+                    </table>
+                </section>
+            </main>
+        </div>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h1 id="modal-title"></h1>
+                <p id="modal-message"></p>
+                <button onclick="closeModal()">OK</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const menuRenderer = new MenuRenderer(menuItems, "#menu-container");
+        menuRenderer.render();
+        closeModal = () => {
+            document.getElementById("myModal").style.display = "none";
+        }
+    </script>
+    <script type="module" src="/controller/main.js"></script>
+
+</body>
+
+</html>

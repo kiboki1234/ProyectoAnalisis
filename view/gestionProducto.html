@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ferretería DSA - Gestionar Producto</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/stylesMenu.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Gestion de Productos</h1>
+        </header>
+        <div class="main-content">
+            <aside>
+                <nav id="menu-container"></nav>
+            </aside>
+            <script src="/controller/menu.js"></script>
+            <script src="/controller/menuRenderer.js"></script>
+            <script>
+                const menuRenderer = new MenuRenderer(menuItems, "#menu-container");
+                menuRenderer.render();
+            </script>
+            <main>
+                <section class="form-container">
+                    <form class="form-container-p">
+                        <div class="input-group">
+                            <h3>ID:</h3>
+                            <input type="number" id="id" name="id" required>
+                        </div>
+                        <div class="input-group">
+                            <h3>Nombre del producto:</h3>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="input-group">
+                            <h3>Stock del producto:</h3>
+                            <input type="number" id="stock" name="stock" required>
+                        </div>
+                        <div class="input-group">
+                            <h3>Precio del producto:</h3>
+                            <input type="number" step="0.01" id="price" name="price" required>
+                        </div>
+                        <div class="input-group">
+                            <h3>Descuento del producto:</h3>
+                            <input type="number" step="0.01" id="discount" name="discount" required>
+                        </div>
+                        <div class="input-group">
+                            <h3>Descripción del producto:</h3>
+                            <input type="text" id="description" name="description" required>
+                        </div>
+                    </form>                    
+                </section>    
+                
+                <div class="buttons">
+                    <button id="btn_agregar" type="button" onclick="addProduct()">Agregar</button>
+                    <button class="nuevo-button" type="button" onclick="clearForm()">Nuevo</button>
+                    <button id="btn_modificar" type="button" onclick="updateProduct()">Modificar</button>
+                    <button  id="btn_borrar" type="button" onclick="deleteProduct()">Borrar</button>
+                </div>           
+                <div class="search-container">
+                    <label for="search-id">Buscar Producto:</label>
+                    <input id="search-id" type="text" name="search-id">
+                    <button id="btn_buscar" class="nuevo-button" type="button" onclick="searchProduct()">Buscar</button>
+                </div>                
+                <section class="table-container">
+                    <table id="product-table">
+                        <thead>
+                            <tr>
+                                <th id="product_id">ID</th>
+                                <th>Nombre</th>
+                                <th>Stock</th>
+                                <th>Precio</th>
+                                <th>Descuento</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos de los productos se insertarán aquí -->
+                        </tbody>
+                    </table>
+                </section>                
+            </main>
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal()">&times;</span>
+                    <h1></h1>
+                    <p></p>
+                    <button onclick="closeModal()">OK</button>
+                </div>
+            </div>  
+        </div>
+    </div>
+    <script type="module" src="/controller/mainGestion.js"></script>
+</body>
+</html>

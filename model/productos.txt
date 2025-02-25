@@ -1,0 +1,52 @@
+ID|Nombre|Stock|Precio|Descuento|Descripción
+1|Llave Inglesa|384|659.123|9.72|Llave Inglesa de alta calidad
+2|Tijera Podadora|494|439.45|10.22|Tijera Podadora de alta calidad
+3|Esmeriladora|223|750.48|8.34|Esmeriladora de alta calidad
+4|Cortadora|343|378.27|3.73|Cortadora de alta calidad
+5|Caladora|375|445.1|16.16|Caladora de alta calidad
+6|Llave Allen|290|710.22|7.02|Llave Allen de alta calidad
+8|Espátula|139|70.82|14.9|Espátula de alta calidad
+9|Llave Stilson|135|275.35|13.85|Llave Stilson de alta calidad
+10|Llave Stilson|391|520.18|5.34|Llave Stilson de alta calidad
+11|Cincel|40|290.09|8.41|Cincel de alta calidad
+12|Regla|477|209.91|6.49|Regla de alta calidad
+13|Martillo|168|508.01|14.27|Martillo de alta calidad
+14|Carretilla|91|109.9|10.76|Carretilla de alta calidad
+15|Compresor|478|885.84|11.73|Compresor de alta calidad
+16|Tijera Podadora|280|430.47|4.98|Tijera Podadora de alta calidad
+17|Esmeriladora|264|893.01|12.57|Esmeriladora de alta calidad
+18|Soldadora|444|783.5|10.45|Soldadora de alta calidad
+19|Pulidora|231|597.95|3.22|Pulidora de alta calidad
+20|Llave Inglesa|36|382.38|12.66|Llave Inglesa de alta calidad
+21|Carretilla|241|337.75|18.73|Carretilla de alta calidad
+22|Llave Stilson|153|598.2|16.51|Llave Stilson de alta calidad
+23|Tenaza|66|870.57|14.67|Tenaza de alta calidad
+24|Cortadora|497|650.66|8.53|Cortadora de alta calidad
+25|Esmeriladora|459|129.71|19.84|Esmeriladora de alta calidad
+26|Pulidora|126|125.64|3.28|Pulidora de alta calidad
+27|Cortadora|132|230.66|2.75|Cortadora de alta calidad
+28|Tenaza|204|687.38|5.75|Tenaza de alta calidad
+29|Llave Inglesa|396|880.05|11.68|Llave Inglesa de alta calidad
+30|Caladora|75|649.39|12.21|Caladora de alta calidad
+31|Taladro|258|381.63|4.27|Taladro de alta calidad
+32|Cortadora|132|981.04|9.18|Cortadora de alta calidad
+33|Arandela|17|706.77|4.58|Arandela de alta calidad
+35|Serrucho|52|150.56|19.85|Serrucho de alta calidad
+36|Soldadora|437|150.42|9.21|Soldadora de alta calidad
+37|Brocas|440|550.14|10.87|Brocas de alta calidad
+38|Mazo|308|132.26|17.96|Mazo de alta calidad
+39|Esmeriladora|363|589.86|10.56|Esmeriladora de alta calidad
+40|Tornillo|127|468.96|11.15|Tornillo de alta calidad
+41|Pulidora|304|33.09|1.96|Pulidora de alta calidad
+42|Pala|201|343.71|1.49|Pala de alta calidad
+43|Soldadora|123|955.86|18.13|Soldadora de alta calidad
+44|Tijera Podadora|439|659.1|18.66|Tijera Podadora de alta calidad
+45|Cortadora|391|629.53|18.5|Cortadora de alta calidad
+46|Mazo|112|325.92|9.04|Mazo de alta calidad
+47|Escalera|373|455.64|16.34|Escalera de alta calidad
+48|Taladro|448|93.75|14.79|Taladro de alta calidad
+49|Pala|75|491.1|19.52|Pala de alta calidad
+50|Carretilla|292|634.04|14.98|Carretilla de alta calidad
+100|prueba  de josue |384|659.11|9.72|Llave Inglesa de alta calidad
+200|Flexometro|3|3.50|0|Metro de 100 m
+1|Llave Inglesa modificada|384|659.12|9.72|Llave Inglesa de alta calidad
